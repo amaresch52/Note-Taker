@@ -1,21 +1,14 @@
-// Require Dependencies
 const express = require("express");
-const fs = require("fs");
-const path = require("path");
+const htmlRoutes = require("./routes/htmlRoute");
+const apiRoutes = require("./routes/apiRoute");
 
-// Initialize express app
 const app = express();
 const PORT = process.env.PORT || 8081;
 
-// Setup data parsing
-app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static(__dirname));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static("public"));
+app.use("/api", apiRoutes);
+app.use("/", htmlRoutes);
 
-//Require routes file
-require("./routes/routes")(app);
-
-// Setup listener
-app.listen(PORT, () => {
-  console.log("App listening on PORT: " + PORT);
-});
+app.listen(PORT, () => console.log(`Listening on PORT : ${PORT}`));
